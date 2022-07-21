@@ -3,6 +3,9 @@ import Modal from '../Modal';
 
 
 const PhotoList = ({ category }) => {
+
+    const [currentPhoto, setCurrentPhoto] = useState();
+    const [isModalOpen, setIsModalOpen] = useState(false);
     
     const [photos] = useState([
         {
@@ -106,20 +109,20 @@ const PhotoList = ({ category }) => {
     const currentPhotos = photos.filter((photo) => photo.category === category);
 
 
-    const [currentPhoto, setCurrentPhoto] = useState();
-    const [isModalOpen, setIsModalOpen] = useState(false);
-
-
     const toggleModal = (image, i) => {
-      // current photo
       setCurrentPhoto({...image, index: i});
-      setIsModalOpen(true);
-    }
+      setIsModalOpen(!isModalOpen);
+    };
 
     
     return (
         <div>
-          {isModalOpen && <Modal currentPhoto={currentPhoto} />}  {/* statement will only render the Modal if the value isModalOpen is true */}
+
+            {/* statement will only render the Modal if the value isModalOpen is true */}
+            {isModalOpen && ( 
+                <Modal currentPhoto={currentPhoto} onClose={toggleModal} /> 
+            )}  
+
             <div className="flex-row">
                 {currentPhotos.map((image, i) => (
                     <img
@@ -131,6 +134,7 @@ const PhotoList = ({ category }) => {
                     />
                 ))}
             </div>
+
         </div>
     )
 }
